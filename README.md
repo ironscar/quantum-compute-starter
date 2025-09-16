@@ -20,6 +20,7 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
     - for 75 qubits, we need 302 zettabytes (1e9 TB) which is more than the collective data on Earth in 2025 (~180 ZB)
   - we expect to have quantum computers with millions of qubits just like we have classical computers with millions of bits today
   - one qubit can be seen as a sphere with two angles (`θ` - angle with z-axis) and (`Φ` - angle between XY projection and x-axis)
+    - this sphere is also called the `Bloch sphere`
 
 <p align="center">
   <img src="images/qubit-visualization.png" />
@@ -109,5 +110,45 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
   - a qubit is similar to probabilistic bit but uses two complex numbers instead of real numbers
   - the qubit holds to `α^2 + β^2 = 1` which is similar to the equation of a circle
   - when `α = β`, then superposition occurs
+
+---
+
+## Measurement
+
+- Like at the end of a classical computation we read bits, in quantum computations we measure qubits
+- Qubits cannot be read like regular bits, an attempt to read them gives a classical result
+  - also due to `The Heisenberg Uncertainity Principle`
+- A qubit is represented as two angles on the Bloch sphere, conventionally the north and south pole
+  - a qubit state before measurement can be any point on that sphere (represented by the two angles)
+    - these are often called superposition states
+  - when a qubit is measured, the poles are the only possible results of the measurement
+  - these results are specified as `|0⟩` and `|1⟩` which are the north and south pole respectively
+    - these are often called the collapsed state
+- Quantum computations are carried out on the qubit with smooth rotations but the collapse of the state when measured is discontinuous and happens instantly
+  - the measurement generally happens at the end of the algorithm
+  - wen measuring, only `θ` is important so on the equator, there is equal chance of collapsing to either state
+  - probability of collapsing to the north pole = `cos(θ/2)^2`
+  - `Φ` becomes important during computations
+- Quantum gates
+  - `H` gate creates a superposition state of equal probability (somewhere on equator) given a collapsed state
+    - usually from Z-axis to X-axis and vice versa
+  - `Y` gate rotates state about Y axis and takes a parameter to decide how much rotation is applied
+    - 100% implies it will go to the south pole from the north pole
+    - 50% implies it will go to the equator from the north pole
+  - `Z` gate rotates around Z-axis by `π radians` (180 degrees)
+  - `X` gate flips qubit
+- In quantum computing, a single qubit releases very little information
+  - moreover, it probably doesnt have many superpositions to yield useful information
+  - but we can repeat the process multiple times to estimate the state from multiple individual experiments
+  - collapse can happen to either state but multiple times can show the corresponding probabilities
+  - the process of predicting the qubit state before measurement is called `tomography`
+- Generally, we can read the data from classical systems whenever but we cannot in quantum systems
+  - at first look, this is random, but intelligent algorithms can be fairly deterministic
+  - For example, `HZH` gate will deterministically take an input qubit and collapse to `|1⟩`
+- However, quantum algorithms are never fully deterministic and the solution is probabilistic
+  - assume we have to find a marked item in a list of N unsorted items, classically `O(N)`
+  - probability of guessing the right item is `1/8`
+  - quantum algorithms can be constructed to boost the success probability by repeatedly measuring at the right time
+  - this quantum search algorithm is called `Grover's algorithm` with complexity of `O(sqrt(N))`
 
 ---
