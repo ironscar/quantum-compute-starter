@@ -79,3 +79,35 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
 - Adding two solutions here together produces another solution, which is how superposition works for quantum computers
 
 ---
+
+## Qubits
+
+- Compute is done using data which can be created/stored/transfered/computed/deleted
+  - quantum computers find create/store/delete challenging so we can find advantages in transfer/compute
+- Data can be analog (continuous real numbers), digital (discrete integers) and quantum (complex numbers)
+  - binary is a special case of digital represented by 0 or 1
+- Analog data has infinite detail but cannot all be stored whereas digital details have some loss associated with it
+  - quantum data can faithfully represent the real world without loss (and can be protected against error)
+- Quantum data is single use because it cannot be copied, once read, it collapses
+  - this is due to `The Heisenberg Uncertainity Principle`
+- The process of changing physical things into configurations representing data is called `encoding`
+  - this is done today (2025) in quantum computers using:
+    - trapped ions
+    - neutral atoms
+    - superconducting circuits
+    - photonic circuits
+    - defects in crystal structures
+- Once we have encoded data, we can do computations on it using a sequence of simple functions (logic gates)
+  - each logic gate (AND/OR/NOT) can be combined into logic circuits to achieve any algorithm
+  - the NAND gate is universal in the sense that any algorithm can be created using only NAND gates
+  - quantum computations can be visualized as circuits as well but the gates (and their symbols) are different
+  - digital logic gates are non-reversible but can be made so by feeding output to input
+  - quantum gates must be reversible
+- A fair coin is such that heads and tails have 50% chance each
+  - an unfair coin is such that the chances are different but they sum up to 100%
+  - a probabilistic bit is similar to the unfair coin where `h + t = 1` (h and t are real numbers)
+  - a qubit is similar to probabilistic bit but uses two complex numbers instead of real numbers
+  - the qubit holds to `α^2 + β^2 = 1` which is similar to the equation of a circle
+  - when `α = β`, then superposition occurs
+
+---
