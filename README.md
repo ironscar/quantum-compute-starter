@@ -191,6 +191,93 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
   <img src="images/circle-notation.png" />
 </p>
 
-- Look at multi-qubit computations and develop a notion of circle notations with phase logic [TODO]
+- Circle notations can help with multi-qubit systems
+- The number of computational states doubles with each new qubit
+  - `|00⟩, |01⟩, |10⟩ and |11⟩` are the possible states of a two qubit system
+  - `|Ψ⟩ = a|00⟩ + b|01⟩ + c|10⟩ + d|11⟩` is the resultant state and this forms a register
+- Multi-qubit gates
+  - these have control qubits and target qubits represented as a column vector with all computational state coefficients
+  - `CNOT or CX` applies the `Pauli X` gate on the target qubit if the control qubit is `|1⟩`
+    - matrix version is `[[1 0 0 0][0 1 0 0][0 0 0 1][0 0 1 0]]`
+  - `CZ` applies the `Pauli Z` gate on the target qubit if the control qubit is `|1⟩`
+    - matrix version is `[[1 0 0 0][0 1 0 0][0 1 0 0][0 0 0 -1]]`
+  - `SWAP` swaps the state of two qubits and can be implemented using 3 alternating CNOTs
+    - matrix version is `[[1 0 0 0][0 0 1 0][0 1 0 0][0 0 0 1]]`
+  - `Toffoli` is a 3-qubit gate with 2 control qubits and 1 target qubit
+    - it applies the `Pauli X` gate to the target qubit if both control qubits are in `|1⟩` state
+    - this is something like the classical version of an AND gate
+
+<p align="left">
+  <img src="images/multi-qubit-gates.png" />
+</p>
+
+---
+
+### Self notation for easier writing
+
+<p align="left">
+  <img src="images/quantum-circuit-eg1.png" />
+</p>
+
+- Assume we had the above quantum circuit to represent with an easy-to-type language
+
+```typescript
+function qfunc(q: QubitList) { // q is the list of all qubits
+    q3.H();
+    q3.Sdag(q2); // Sdag is the conjugate of the transpose of S
+    q3.Tdag(q1); // Tdag is the conjugate of the transpose of T
+    q2.H();
+    q2.Sdag(q1); // the control qubits are the parameters and the target qubits are the calling qubits, both in same order
+    q1.H();
+    Swap(q1,q3); // Swap works on 2 qubits and updates them by reference in swapped order
+}
+```
+
+<p align="center">
+  <img src="images/quantum-circuit-eg2.png" />
+</p>
+
+- Assume we had the above quantum circuit to represent with an easy-to-type language
+- The depth of a quantum circuit corresponds to a circuit's complexity and its total execution time
+  - it is measured as the maximum number of operations required when all parallelizable qubit operations are parallelized in a left-to-right manner while no qubit can simultaneously support read and write
+  - the below pseudocode shows how and why `depth = 9`
+
+```typescript
+function qfunc(q: QubitList) {
+    for (i in 0 to 4) {
+        qi.H(); // start of L1
+    }
+    for (i in 0 to 4) {
+        q[i + 5].CX(qi); // start of L2 as the qi cannot be used while being updated in L1
+    }
+    q7.CX(q1); // start of L3 as it needs the update in q1 as part of L2
+    q8.X();
+    q9.CX(q1); // start of L4 as it needs to access q1 and cannot do so at same time as in L3
+    q7.X();
+    q11.CX(q1); // start of L5 as it needs to access q1 and cannot do so at same time as in L4
+    Swap(q6,q11); // start of L6 as it needs the update of q11 from L5
+    Swap(q6,q9); // start of L7 as it needs the update of q6 from L6
+    Swap(q6,q10); // start of L8 as it needs the update of q6 from L7
+    q6.X(); // start of L9 as it needs the update of q6 from L8
+}
+```
+
+---
+
+## Entanglement
+
+- Entanglement can be described as two qubits behaving the same way even while being separated by significant distances
+  - it can be realised using an `H` gate and a `CX` gate as shown
+
+```typescript
+// implementation
+function E(q0: Qubit) {
+    q0.H();
+    this.CX(q0);
+}
+
+// usage is like entangle q1 using q0 where q0 is the control qubit for the CX gate
+q1.E(q0);
+```
 
 ---
