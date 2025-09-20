@@ -129,14 +129,13 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
   - wen measuring, only `θ` is important so on the equator, there is equal chance of collapsing to either state
   - probability of collapsing to the north pole = `cos(θ/2)^2`
   - `Φ` becomes important during computations
-- Quantum gates
-  - `H` gate creates a superposition state of equal probability (somewhere on equator) given a collapsed state
-    - usually from Z-axis to X-axis and vice versa
-  - `Y` gate rotates state about Y axis and takes a parameter to decide how much rotation is applied
-    - 100% implies it will go to the south pole from the north pole
-    - 50% implies it will go to the equator from the north pole
-  - `Z` gate rotates around Z-axis by `π radians` (180 degrees)
-  - `X` gate flips qubit
+- Quantum gates:
+  - `H (Hadamard)` gate creates a superposition state of equal probability (somewhere on equator) given a collapsed state
+    - usually from +Z-axis to +X-axis and vice versa
+  - `X Pauli` gate rotates 180 degrees around x-axis (flips the qubit)
+  - `Y Pauli` gate rotates 180 degrees around Y axis
+  - `Z Pauli` gate rotates 180 degrees around Z-axis
+  - `Measurement` gate measures the information in the qubit and results in a collapsed state
 - In quantum computing, a single qubit releases very little information
   - moreover, it probably doesnt have many superpositions to yield useful information
   - but we can repeat the process multiple times to estimate the state from multiple individual experiments
@@ -150,5 +149,47 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
   - probability of guessing the right item is `1/8`
   - quantum algorithms can be constructed to boost the success probability by repeatedly measuring at the right time
   - this quantum search algorithm is called `Grover's algorithm` with complexity of `O(sqrt(N))`
+
+---
+
+## Quantum circuits
+
+- Gates are the most primitive instruction for a quantum computer
+  - they can change the state of qubits
+- A sequence of gates form an algorithm visualized as quantum circuits
+- Following are few important gates:
+  - `Hadamard`, `Pauli X`, `Pauli Y`, `Pauli Z`
+  - there is the `S` and `T` gates where `SS = Z` and `TT = S`
+  - there is also the inverse of `S` and `T` gates which just rotate in the opposite direction
+  - more at `https://cdn.prod.website-files.com/6523f13a748909d3e1bbb657/65eb1e3e5c02be8b3520ae32_IQM-Cheat-Sheet-for-Circuit-Magicians.pdf`
+- Single qubit quantum operations can be modeled using vectors
+  - a single qubit `Q = [[a][b]]`
+    - `a` and `b` are the amplitudes of the `|0⟩` and `|1⟩` states respectively
+  - each operation is a matrix of 2 rows and 2 columns
+    - `X = [[0 1][1 0]]`
+    - `Y = [[0 -1][i 0]]`
+    - `Z = [[1 0][0 -1]]`
+    - `S = [[1 0][0 i]]`
+    - `H = (1/sqrt(2))*S`
+    - `T = [[1 0][0 e^(iπ/4)]]`
+  - Applying a gate is like matrix multiplication such `XQ = Q'`
+- Gates are assumed to be instantaneous but are actually carried out physically over time
+  - in the quantum circuit, when there is no gate and only blank line, its the `identity` operation
+  - it implies, do nothing and retain current state
+- `Blochers` (circle notation) are another way to visualize qubits
+  - two blochers are required to represent one qubit
+  - Each blocher is shown as 2 concentric circles
+    - outer circle is amplitude = 1
+    - inner circle is amplitude of a pure state `|0⟩` or `|1⟩`
+    - each pure state has its own blocher showing its amplitude
+    - there is also an angle relative to +X axis from center to surface representing the `phase`
+  - A Bloch sphere stops working for more than one qubit whereas blochers still work
+  - The quantum state of a system can be defined by an arrangement of these circle notations
+
+<p align="center">
+  <img src="images/circle-notation.png" />
+</p>
+
+- Look at multi-qubit computations and develop a notion of circle notations with phase logic [TODO]
 
 ---
