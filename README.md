@@ -183,6 +183,7 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
     - inner circle is amplitude of a pure state `|0⟩` or `|1⟩`
     - each pure state has its own blocher showing its amplitude
     - there is also an angle relative to +X axis from center to surface representing the `phase`
+      - its the `Φ` angle between XY projection and x-axis on the Bloch sphere
   - A Bloch sphere stops working for more than one qubit whereas blochers still work
   - The quantum state of a system can be defined by an arrangement of these circle notations
 
