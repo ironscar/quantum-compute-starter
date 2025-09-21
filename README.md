@@ -224,8 +224,8 @@ A starter project on quantum computing based on Black Opal Q-Control https://bla
 ```typescript
 function qfunc(q: QubitList) { // q is the list of all qubits
     q3.H();
-    q3.Sdag(q2); // Sdag is the conjugate of the transpose of S
-    q3.Tdag(q1); // Tdag is the conjugate of the transpose of T
+    q3.Sdag(q2); // Sdag is the conjugate of the transpose of S (general S is not multi-qubit though)
+    q3.Tdag(q1); // Tdag is the conjugate of the transpose of T (general T is not multi-qubit though)
     q2.H();
     q2.Sdag(q1); // the control qubits are the parameters and the target qubits are the calling qubits, both in same order
     q1.H();
@@ -266,7 +266,13 @@ function qfunc(q: QubitList) {
 
 ## Entanglement
 
-- Entanglement can be described as two qubits behaving the same way even while being separated by significant distances
+- Entanglement can be described as two qubits behaving the same way 
+  - this is observed even while being separated by significant distances
+  - classical information cannot be entangled
+  - when superpositions collapse, we expect to find classical correlations
+  - this is an extremely fragile state to maintain which can collapse more easily than superposition
+  - value of neither qubit is known before measurement
+  - value of one qubit can be inferred based on the meeasured value of the second qubit
   - it can be realised using an `H` gate and a `CX` gate as shown
 
 ```typescript
@@ -279,5 +285,16 @@ function E(q0: Qubit) {
 // usage is like entangle q1 using q0 where q0 is the control qubit for the CX gate
 q1.E(q0);
 ```
+
+- Entanglement has promise in quantum network security as well
+  - once two qubits are entangled, no other qubits can be entangled into this system
+  - so if a sender and receiver are entangled, no other entity can correlate with the data being sent
+- Entaglement doesn't seem to have a causal relationship that can determine why it happened
+- In entanglement, no actual information is sent between the qubits
+  - both qubits just happen to evolve the same way with time until either one collapses
+  - technically, the changes in each may coincide faster than light can travel between them
+    - to prove that this though, we'd have to measure the qubit faster than light can travel between them
+  - moreover, we cannot use this for faster than light communication directly for following reasons
+    - measuring the qubit collapses the entanglement which cannot contain much information
 
 ---
