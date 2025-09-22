@@ -298,3 +298,76 @@ q1.E(q0);
     - measuring the qubit collapses the entanglement which cannot contain much information
 
 ---
+
+## Noise
+
+- Quantum computers have noise that cause errors leading to unexpected results sometimes
+  - If we put two H gates in series, we should always see `|0⟩` but a few times we actually see `|1⟩`
+- Noise increases when there are more qubits involved
+- There are a few metrics to compare quantum computers
+  - `circuit depth` specifies the number of gates that can be applied before information is lost
+  - `gate error rate` specifies the accuracy of each gate on average
+  - `number of qubits` (self-explanatory)
+- Quantum computing software evolves treating qubits as perfect but the hardware is not actually perfect
+
+---
+
+## Control
+
+- Control theory for addressing quantum errors could work as `closed-loop control`:
+  - the controller takes input and sends it to system which is also affected by noise
+  - the output is measured and the result is fed back to the controller
+  - the controller modifies the input to maintain control
+  - can be done when measurement is simple
+- Or they could work as `open-loop control`
+  - has no feedback loop
+  - used when measurement is hard
+  - controller is switched on at intervals assuming external environment is fairly stable
+- The problem with quantum computers is that measuring causes information collapse
+  - this implies closed loop in the classical sense is not possible
+  - thus, gates are made to be resilient against noises in environments where noise is predictable and low
+- A sort-of closed-loop control system can be done in quantum computers in the following way
+  - once measurement is done, feed the measurement to a second identical quantum computer and reset the first
+  - repeat on second and feed to first or another
+- True closed-loop control is possible but has many subtleties
+  - `strong measurement` reveals maximum amount of classical information from a quantum system
+    - this is what we refer to as measurement in general and leads to state collapse
+  - `gentle measurement` allows revealing less information and thus not leading to full collapse
+    - as a result, we can feed this partial result back into the controller
+- Quantum error correction is a way of quantum feedback control
+  - entanglement can be used to encode a single logical qubit into multiple physical qubits [HOW]
+  - these work in three phases of encode, detect and decode
+  - gentle measurements are done to reveal infromation about errors but not all information
+    - specifically a parity check measurement is done to check error but no information on logical state is revealed
+    - as a result, the logical information remains intact while allowing feedback into controller which applies the correction
+
+---
+
+## Coding
+
+- Creating a quantum algorithm starts with a set of virtual gates
+  - the selection for these gates may depend on the hardware for best utilization
+  - these virtual gates are then translated to the associated physical gates on the hardware in a generic way
+- We will go ahead with the following set
+  - X, Y, Z, S, Sdag, T, Tdag, Dot, Swap
+  - Dot can be combined with other gates to enable control qubits for multi-qubit gates
+- Z gates are often not implemented physically as it can be physically tracked later
+  - thus their effect is instantaneous and error-free
+  - using more Z gates to do the computation makes is more optimal in that case
+- Any y rotation can be achieved by the following
+  - 90 degree x rotation (`RX(50)`)
+  - arbitrary z rotation (`RZ(θ)`)
+  - -90 degree x rotation (`RXdag(50)`)
+  - this is referred to as the U3 gate
+  - `U3(a,b,c) = RZ(b) RX(-π/2)RZ(a)RX(π/2) RZ(c)`
+- Circuits that have constant depth irrespective of the number of qubits are called `shallow circuits`
+  - mostly these are not useful when we want exponential speedups
+- Probability of no error decreases exponentially with increase in number of gates
+
+---
+
+## Todo
+
+- Check PDF link above on how to do circuits with practical uses
+
+---
